@@ -1,6 +1,6 @@
 package org.meetingschedulingplatform.dtos;
 
-import org.meetingschedulingplatform.api.domain.entities.TimeSlot;
+import org.meetingschedulingplatform.domain.entities.TimeSlot;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 
 import java.time.Instant;

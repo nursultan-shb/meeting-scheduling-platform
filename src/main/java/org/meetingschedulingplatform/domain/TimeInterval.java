@@ -1,4 +1,4 @@
-package org.meetingschedulingplatform.api.domain;
+package org.meetingschedulingplatform.domain;
 
 import java.time.Instant;
 import java.util.Optional;

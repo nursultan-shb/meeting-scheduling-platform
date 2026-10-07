@@ -1,4 +1,4 @@
-package org.meetingschedulingplatform.api.domain.entities;
+package org.meetingschedulingplatform.domain.entities;
 
 
 import jakarta.persistence.Column;
@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.meetingschedulingplatform.api.domain.TimeInterval;
+import org.meetingschedulingplatform.domain.TimeInterval;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 
 import java.time.Instant;

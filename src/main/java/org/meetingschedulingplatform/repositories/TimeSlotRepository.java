@@ -1,6 +1,6 @@
 package org.meetingschedulingplatform.repositories;
 
-import org.meetingschedulingplatform.api.domain.entities.TimeSlot;
+import org.meetingschedulingplatform.domain.entities.TimeSlot;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

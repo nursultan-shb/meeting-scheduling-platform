@@ -2,7 +2,7 @@ package org.meetingschedulingplatform.services;
 
 import org.meetingschedulingplatform.dtos.CreateSlotDto;
 import org.meetingschedulingplatform.dtos.UpdateSlotDto;
-import org.meetingschedulingplatform.api.domain.entities.TimeSlot;
+import org.meetingschedulingplatform.domain.entities.TimeSlot;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

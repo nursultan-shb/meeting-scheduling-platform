@@ -1,4 +1,4 @@
-package org.meetingschedulingplatform.api.domain.entities;
+package org.meetingschedulingplatform.domain.entities;
 
 
 import jakarta.persistence.Entity;

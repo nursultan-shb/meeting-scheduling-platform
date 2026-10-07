@@ -7,7 +7,7 @@ import org.meetingschedulingplatform.dtos.CreateSlotDto;
 import org.meetingschedulingplatform.dtos.SlotDto;
 import org.meetingschedulingplatform.dtos.UpdateSlotDto;
 import org.meetingschedulingplatform.dtos.UpdateSlotStatusDto;
-import org.meetingschedulingplatform.api.domain.entities.PageDto;
+import org.meetingschedulingplatform.domain.entities.PageDto;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 import org.meetingschedulingplatform.services.SlotService;
 
