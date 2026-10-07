@@ -1,12 +1,15 @@
 package org.meetingschedulingplatform.services.impl;
 
 import lombok.RequiredArgsConstructor;
+
 import org.meetingschedulingplatform.api.exceptions.ConflictException;
+import org.meetingschedulingplatform.api.exceptions.UserNotFoundException;
 import org.meetingschedulingplatform.dtos.CreateUserDto;
 import org.meetingschedulingplatform.dtos.UserDto;
 import org.meetingschedulingplatform.api.domain.entities.User;
 import org.meetingschedulingplatform.repositories.UserRepository;
 import org.meetingschedulingplatform.services.UserService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
