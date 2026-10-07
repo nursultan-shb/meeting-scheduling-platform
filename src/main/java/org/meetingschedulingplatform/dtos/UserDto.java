@@ -1,6 +1,6 @@
 package org.meetingschedulingplatform.dtos;
 
-import org.meetingschedulingplatform.entities.User;
+import org.meetingschedulingplatform.api.domain.entities.User;
 
 import java.util.UUID;
 

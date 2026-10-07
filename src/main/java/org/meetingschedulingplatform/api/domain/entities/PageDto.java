@@ -1,4 +1,4 @@
-package org.meetingschedulingplatform.entities;
+package org.meetingschedulingplatform.api.domain.entities;
 
 import org.springframework.data.domain.Page;
 

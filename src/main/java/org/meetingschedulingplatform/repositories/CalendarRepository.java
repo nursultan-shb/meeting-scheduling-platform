@@ -1,7 +1,7 @@
 package org.meetingschedulingplatform.repositories;
 
 import jakarta.persistence.LockModeType;
-import org.meetingschedulingplatform.entities.Calendar;
+import org.meetingschedulingplatform.api.domain.entities.Calendar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;

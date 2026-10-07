@@ -1,4 +1,4 @@
-package org.meetingschedulingplatform.entities;
+package org.meetingschedulingplatform.api.domain.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
