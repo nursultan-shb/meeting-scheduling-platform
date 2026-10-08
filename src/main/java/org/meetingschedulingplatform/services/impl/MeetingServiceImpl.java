@@ -43,30 +43,17 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     @Override
     public UUID bookMeeting(BookMeetingDto dto) {
-        UUID ownerId = timeSlotRepository.findOwnerUserId(dto.slotId())
-                .orElseThrow(() -> new SlotNotFoundException(dto.slotId()));
-
         Set<UUID> participantIds = dto.participants() == null ? Set.of() : new LinkedHashSet<>(dto.participants());
-        Set<UUID> attendeeIds = withOrganizer(participantIds, ownerId);
-
+        Set<UUID> attendeeIds = getMeetingAttendees(dto, participantIds);
         Map<UUID, Calendar> calendarsByUserId = lockCalendars(attendeeIds);
 
         TimeSlot timeSlot = timeSlotRepository.findById(dto.slotId())
                 .orElseThrow(() -> new SlotNotFoundException(dto.slotId()));
-        if (timeSlot.isBusy()) {
-            throw new ConflictException("Time slot " + dto.slotId() + " is not free");
-        }
-        Set<UUID> unavailable = findUnavailableAttendees(attendeeIds, timeSlot);
-        if (!unavailable.isEmpty()) {
-            throw new ConflictException("Users are not available at this time: " + unavailable);
-        }
 
-        Meeting meeting = new Meeting();
-        meeting.setTitle(dto.title());
-        meeting.setDescription(dto.description());
-        meeting.setTimeSlot(timeSlot);
+        validateTimeSlotsForBooking(timeSlot, dto, attendeeIds);
+
+        Meeting meeting = createNewMeeting(dto, timeSlot);
         participantIds.forEach(id -> meeting.addParticipant(calendarsByUserId.get(id).getUser()));
-
         Meeting saved = meetingRepository.save(meeting);
 
         timeSlot.setStatus(TimeSlotStatus.BUSY);
@@ -85,8 +72,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     @Override
     public MeetingDto updateMeeting(UUID meetingId, UpdateMeetingDto dto) {
-        UUID organizerId = meetingRepository.findOrganizerId(meetingId)
-                .orElseThrow(() -> new MeetingNotFoundException(meetingId));
+        UUID organizerId = getOrganizerIdByMeetingId(meetingId);
         Set<UUID> participantIds = new LinkedHashSet<>(dto.participants());
         Map<UUID, Calendar> calendarsByUserId = lockCalendars(withOrganizer(participantIds, organizerId));
 
@@ -116,8 +102,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     @Override
     public void cancelMeeting(UUID meetingId) {
-        UUID organizerId = meetingRepository.findOrganizerId(meetingId)
-                .orElseThrow(() -> new MeetingNotFoundException(meetingId));
+        UUID organizerId = getOrganizerIdByMeetingId(meetingId);
         lockCalendars(Set.of(organizerId));
 
         Meeting meeting = meetingRepository.findById(meetingId)
@@ -152,5 +137,34 @@ public class MeetingServiceImpl implements MeetingService {
         unavailable.addAll(participantRepository.findUsersInMeetings(
                 attendeeIds, timeSlot.getStartTime(), timeSlot.getEndTime()));
         return unavailable;
+    }
+
+    private void validateTimeSlotsForBooking(TimeSlot timeSlot, BookMeetingDto dto, Set<UUID> attendeeIds) {
+        if (timeSlot.isBusy()) {
+            throw new ConflictException("Time slot " + dto.slotId() + " is not free");
+        }
+        Set<UUID> unavailable = findUnavailableAttendees(attendeeIds, timeSlot);
+        if (!unavailable.isEmpty()) {
+            throw new ConflictException("Users are not available at this time: " + unavailable);
+        }
+    }
+
+    private UUID getOrganizerIdByMeetingId(UUID meetingId) {
+         return meetingRepository.findOrganizerId(meetingId)
+                .orElseThrow(() -> new MeetingNotFoundException(meetingId));
+    }
+
+    private Meeting createNewMeeting(BookMeetingDto dto, TimeSlot timeSlot) {
+        Meeting meeting = new Meeting();
+        meeting.setTitle(dto.title());
+        meeting.setDescription(dto.description());
+        meeting.setTimeSlot(timeSlot);
+        return meeting;
+    }
+
+    private Set<UUID> getMeetingAttendees(BookMeetingDto dto, Set<UUID> participantIds) {
+        UUID ownerId = timeSlotRepository.findOwnerUserId(dto.slotId())
+                .orElseThrow(() -> new SlotNotFoundException(dto.slotId()));
+        return withOrganizer(participantIds, ownerId);
     }
 }
