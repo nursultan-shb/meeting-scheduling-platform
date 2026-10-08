@@ -36,7 +36,8 @@ public class SlotRestController {
     private final SlotService slotService;
 
     @PostMapping
-    public ResponseEntity<List<SlotDto>> createSlots(@PathVariable UUID userId, @Valid @RequestBody CreateSlotDto dto) {
+    public ResponseEntity<List<SlotDto>> createSlots(@PathVariable UUID userId,
+                                                     @Valid @RequestBody CreateSlotDto dto) {
         List<SlotDto> slots = slotService.createSlots(userId, dto).stream().map(SlotDto::from).toList();
         var response = ResponseEntity.status(HttpStatus.CREATED);
         return response.body(slots);

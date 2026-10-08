@@ -39,25 +39,13 @@ public class SlotServiceImpl implements SlotService {
     @Override
     public List<TimeSlot> createSlots(UUID userId, CreateSlotDto dto) {
         Calendar calendar = lockCalendar(userId);
-        TimeRanges.validateSlotRange(dto.startTime(), dto.endTime());
+        validateSlots(calendar, dto);
 
         Duration range = Duration.between(dto.startTime(), dto.endTime());
         Duration slotLength = dto.slotDurationMinutes() == null ? range : Duration.ofMinutes(dto.slotDurationMinutes());
-        long slotCount = range.dividedBy(slotLength);
-        if (!slotLength.multipliedBy(slotCount).equals(range)) {
-            throw new DtoValidationException("The time range must be a multiple of the slot duration");
-        }
-        if (slotCount > MAX_SLOTS_PER_REQUEST) {
-            throw new DtoValidationException("At most " + MAX_SLOTS_PER_REQUEST + " slots can be created at once");
-        }
-        // The new slots cover the whole range, so one check over the range covers all of them
-        if (timeSlotRepository.existsOverlappingSlot(calendar.getId(), dto.startTime(), dto.endTime())) {
-            throw new ConflictException("Time slot overlaps with an existing slot");
-        }
 
-        List<TimeSlot> slots = timeSlotRepository.saveAll(
+        return timeSlotRepository.saveAll(
                 calendar.openSlots(dto.startTime(), dto.endTime(), slotLength));
-        return slots;
     }
 
     @Transactional(readOnly = true)
@@ -121,5 +109,22 @@ public class SlotServiceImpl implements SlotService {
     private TimeSlot getSlot(Calendar calendar, UUID slotId) {
         return timeSlotRepository.findByIdAndCalendarId(slotId, calendar.getId())
                 .orElseThrow(() -> new SlotNotFoundException(slotId));
+    }
+
+    private void validateSlots(Calendar calendar, CreateSlotDto dto) {
+        TimeRanges.validateSlotRange(dto.startTime(), dto.endTime());
+
+        Duration range = Duration.between(dto.startTime(), dto.endTime());
+        Duration slotLength = dto.slotDurationMinutes() == null ? range : Duration.ofMinutes(dto.slotDurationMinutes());
+        long slotCount = range.dividedBy(slotLength);
+        if (!slotLength.multipliedBy(slotCount).equals(range)) {
+            throw new DtoValidationException("The time range must be a multiple of the slot duration");
+        }
+        if (slotCount > MAX_SLOTS_PER_REQUEST) {
+            throw new DtoValidationException("At most " + MAX_SLOTS_PER_REQUEST + " slots can be created at once");
+        }
+        if (timeSlotRepository.existsOverlappingSlot(calendar.getId(), dto.startTime(), dto.endTime())) {
+            throw new ConflictException("Time slot overlaps with an existing slot");
+        }
     }
 }
