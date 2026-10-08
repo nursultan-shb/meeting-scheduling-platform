@@ -139,7 +139,7 @@ overlapping slots well, but cannot express "no attendee is in another meeting", 
   only let owners change their calendar.
 * Meetings can only be changed by cancelling and re-booking when their time should change. There is no endpoint
   listing a user's meetings; the free/busy view shows when they take place.
-* An endpoint that returns an aggregated free/busy view of the day for a user, i.e., availability.
+* No endpoint that returns an aggregated free/busy view of the day for a user, i.e., availability.
 * Recurring availability (e.g. "every weekday 9-17") is not supported. All times are UTC instants; time zones
   are left to the client.
 * Tests are unit tests with mocked repositories. Integration tests against PostgreSQL (Testcontainers) would be
