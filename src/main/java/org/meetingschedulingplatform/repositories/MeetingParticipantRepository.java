@@ -26,14 +26,4 @@ public interface MeetingParticipantRepository extends JpaRepository<MeetingParti
         AND s.endTime > :start
     """)
     List<UUID> findUsersInMeetings(Collection<UUID> userIds, Instant start, Instant end);
-
-    @Query("""
-        SELECT new com.scheduler.demo.domain.TimeInterval(s.startTime, s.endTime) FROM MeetingParticipant p
-        JOIN p.meeting m
-        JOIN m.timeSlot s
-        WHERE p.user.id = :userId
-        AND s.startTime < :to
-        AND s.endTime > :from
-    """)
-    List<TimeInterval> findMeetingTimesOfParticipant(UUID userId, Instant from, Instant to);
 }

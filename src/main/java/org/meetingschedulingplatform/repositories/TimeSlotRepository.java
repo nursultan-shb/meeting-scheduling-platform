@@ -68,7 +68,7 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
     @Query("""
         SELECT DISTINCT s.calendar.user.id FROM TimeSlot s
         WHERE s.calendar.user.id IN :userIds
-        AND s.status = com.scheduler.demo.enumerations.TimeSlotStatus.BUSY
+        AND s.status = org.meetingschedulingplatform.enums.TimeSlotStatus.BUSY
         AND s.id <> :excludedSlotId
         AND s.startTime < :end
         AND s.endTime > :start
