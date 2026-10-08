@@ -50,7 +50,7 @@ curl -X POST localhost:16200/users/$ALICE/slots -H 'Content-Type: application/js
 # 3. Book the first slot as a meeting with Bob
 curl -i -X POST localhost:16200/meetings -H 'Content-Type: application/json' \
      -d '{"title": "1:1", "description": "Weekly sync", "slotId": "'$SLOT'", "participants": ["'$BOB'"]}'
-
+```
 
 ### Endpoints
 
