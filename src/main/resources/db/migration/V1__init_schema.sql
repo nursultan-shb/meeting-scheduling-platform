@@ -18,12 +18,6 @@ CREATE TABLE TIME_SLOTS
     created_at TIMESTAMPTZ NOT NULL
 );
 
-CREATE INDEX idx_slot_user_status
-    ON time_slots (user_id, status);
-
-CREATE INDEX idx_slot_time_range
-    ON time_slots (start_time, end_time);
-
 CREATE TABLE MEETINGS
 (
     id           UUID PRIMARY KEY,
@@ -41,7 +35,6 @@ CREATE TABLE MEETING_PARTICIPANTS
     id         UUID PRIMARY KEY,
     meeting_id UUID NOT NULL,
     user_id    UUID NOT NULL,
-    version    INT  NOT NULL,
 
     CONSTRAINT unique_meeting_id_user_id UNIQUE (meeting_id, user_id),
 
