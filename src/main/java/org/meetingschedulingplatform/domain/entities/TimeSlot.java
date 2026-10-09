@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.meetingschedulingplatform.domain.TimeInterval;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
 
 import java.time.Instant;
@@ -54,9 +53,5 @@ public class TimeSlot extends BaseEntity {
 
     public boolean isBooked() {
         return this.getMeeting() != null;
-    }
-
-    public TimeInterval interval() {
-        return new TimeInterval(startTime, endTime);
     }
 }

@@ -2,6 +2,7 @@ package org.meetingschedulingplatform.repositories;
 
 import org.meetingschedulingplatform.domain.entities.TimeSlot;
 import org.meetingschedulingplatform.enums.TimeSlotStatus;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,15 +21,6 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
 
     @Query("SELECT s.calendar.user.id FROM TimeSlot s WHERE s.id = :slotId")
     Optional<UUID> findOwnerUserId(UUID slotId);
-
-    @Query("""
-        SELECT s FROM TimeSlot s
-        WHERE s.calendar.id = :calendarId
-        AND s.startTime < :to
-        AND s.endTime > :from
-        ORDER BY s.startTime
-    """)
-    List<TimeSlot> findSlotsInRange(UUID calendarId, Instant from, Instant to);
 
     @Query("""
         SELECT s FROM TimeSlot s

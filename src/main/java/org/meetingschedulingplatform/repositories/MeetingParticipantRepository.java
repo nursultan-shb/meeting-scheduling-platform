@@ -1,7 +1,6 @@
 package org.meetingschedulingplatform.repositories;
 
 
-import org.meetingschedulingplatform.domain.TimeInterval;
 import org.meetingschedulingplatform.domain.entities.MeetingParticipant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
