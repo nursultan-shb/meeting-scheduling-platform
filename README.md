@@ -108,8 +108,6 @@ User 1 ── 1 Calendar 1 ── * TimeSlot 1 ── 0..1 Meeting * ── * Us
 * **Meeting** is created from a free slot of its organizer (the slot owner) and has a title, description and
   participants. It occupies exactly that slot, so a slot booked for a meeting cannot be moved, freed or deleted;
   cancelling the meeting frees the slot again.
-* **Free/busy** is derived when it is read, not stored (`FreeBusy.compute`). A meeting is stored once, but it makes
-  everyone attending it busy. Participants' calendars are not modified when they are invited.
 
 ### Consistency under concurrent requests
 Overlap and availability rules are "check, then write" operations, which two concurrent requests could both pass.
@@ -139,7 +137,7 @@ overlapping slots well, but cannot express "no attendee is in another meeting", 
   only let owners change their calendar.
 * Meetings can only be changed by cancelling and re-booking when their time should change. There is no endpoint
   listing a user's meetings; the free/busy view shows when they take place.
-* No endpoint that returns an aggregated free/busy view of the day for a user, i.e., availability.
+* There is no endpoint listing a user’s meetings
 * Recurring availability (e.g. "every weekday 9-17") is not supported. All times are UTC instants; time zones
   are left to the client.
 * Tests are unit tests with mocked repositories. Integration tests against PostgreSQL (Testcontainers) would be
